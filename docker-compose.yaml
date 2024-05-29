@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  mlflow:
+    container_name: mlflow
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: "mlflow server --serve-artifacts --host 0.0.0.0 --port 8080"
+    env_file:
+      - .env
+    volumes:
+      - mlflow-nas:/mlartifacts
+    ports:
+      - "8080:8080"
+
+  aimlflow-server:
+    container_name: aimlflow-server
+    build:
+      context: aimlflow
+      dockerfile: Dockerfile
+    entrypoint: ./entrypoint.sh server
+    ports:
+      - "43800:43800"
+    volumes:
+      - mlflow-nas:/nas
+    environment:
+      - AIM_REPO_PATH=/nas/aim
+
+  aimlflow-watcher:
+    container_name: aimlflow-watcher
+    build:
+      context: aimlflow
+      dockerfile: Dockerfile
+    entrypoint: ./entrypoint.sh watcher
+    volumes:
+      - mlflow-nas:/nas
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:8080
+      - AIM_REPO_PATH=/nas/aim
+
+volumes:
+  mlflow-nas:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.30.20,nolock,soft,rw
+      device: ":/volume1/mlflow"
