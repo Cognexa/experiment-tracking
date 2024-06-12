@@ -35,7 +35,7 @@ mlflow.start_run(run_name="Name of the run")
 mlflow.end_run()
 ```
 
-As MLFlow API is quite simple, however to track more information correctly and to use the full potential of MLFlow, this repository contains a `cheat sheet` [script](./example.py) and [ipy notebook](./example.ipynb) of:
+As MLFlow API is quite simple, there is a short introduction with information in a `quickstart` [jupyter notebook](./example.ipynb). The notebook also contains links for logging tensorflow and pytorch models. Quick Introduction to MLFlow API contains information about:
 
 - how to track keras/torch models and metrics
 - how to store artefacts
