@@ -16,6 +16,8 @@ This repository contains Dockerfile and docker-compose.yml for running MLflow se
 
 This code is run locally on our servers, so developers does not have to setup anything locally. They only need to track their experiments using MLflow API to our server.
 
+We can connect via IP: `http://192.168.30.21:8080` or on alias: `http://mlflow.cognexa.com`.
+
 **Centralization:** This also allows us to have all the experiments and tracked projects in one place.
 
 ### Quickguide how to start a project and a run
@@ -35,54 +37,12 @@ mlflow.start_run(run_name="Name of the run")
 mlflow.end_run()
 ```
 
-### Quick example with OpenAI LLM:
 
 ``` python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import mlflow
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
 
-# # Load the .env file with OPENAI_API_KEY if not already set in the environment
-# import dotenv
-# dotenv.load_dotenv()
-
-mlflow_uri = "http://192.168.30.21:8080/"
-mlflow.set_tracking_uri(mlflow_uri)
-mlflow.set_experiment("BrutalExperiment")  # maybe change to your own experiment
-
-# This will enable autologging for all the components in the LLM chain
-mlflow.langchain.autolog()
-
-# default is gpt-3.5-turbo, you can change it to gpt-4o for better results
-llm = ChatOpenAI(model="gpt-4o-mini")
-prompt = PromptTemplate.from_template("Tell me something about {input} in {output_language}:\n")
-chain = prompt | llm
-
-with mlflow.start_run(run_name="test_run"):  # mlflow.end_run() will be called automatically
-    # Invoking the chain will cause a trace to be logged
-    response = chain.invoke(
-        {
-            "input": "Cognexa",
-            "output_language": "Slovak Language",
-        }
-    )
-
-    print(response.content)
-
-    mlflow.log_metric(
-        "tokens_used",
-        response.response_metadata.get("token_usage", {}).get("total_tokens", 0),
-    )
-
-    mlflow.log_param(
-        "model_used",
-        response.response_metadata.get("model_name"),
-    )
-
-    # mlflow.log_artifact("data.txt")  # This will append file to the run
 ```
 
 As MLFlow API is quite simple, there is a short introduction with information in a `quickstart` [jupyter notebook](./example.ipynb). The notebook also contains links for logging tensorflow and pytorch models. Quick Introduction to MLFlow API contains information about:
