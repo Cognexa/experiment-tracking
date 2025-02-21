@@ -16,7 +16,8 @@ This repository contains Dockerfile and docker-compose.yml for running MLflow se
 
 This code is run locally on our servers, so developers does not have to setup anything locally. They only need to track their experiments using MLflow API to our server.
 
-We can connect via IP: `http://192.168.30.21:8080` or on alias: `http://mlflow.cognexa.com`.
+We can connect via IP: `http://192.168.30.21:8080` or on alias: `http://mlflow-internal.cognexa.com` when accessing from Cognexa network.
+To connect from outside of Cognexa network, use alias `http://mlflow.cognexa.com` with login credentials in [bitwarden](https://vault.bitwarden.com/#/vault?search=mlflow&itemId=1b22e6b6-8b0a-444a-bc60-b27d0098e362&action=view).
 
 **Centralization:** This also allows us to have all the experiments and tracked projects in one place.
 
@@ -24,6 +25,8 @@ We can connect via IP: `http://192.168.30.21:8080` or on alias: `http://mlflow.c
 
 - IP and port where MLFlow runs: `http://192.168.30.21:8080`
 - IP and port where AIMFlow runs: `http://192.168.30.21:43800`
+
+In most cases:
 
 ``` python
 import mlflow
@@ -45,14 +48,16 @@ mlflow.end_run()
 
 ```
 
-As MLFlow API is quite simple, there is a short introduction with information in a `quickstart` [jupyter notebook](./example.ipynb). The notebook also contains links for logging tensorflow and pytorch models. Quick Introduction to MLFlow API contains information about:
+As MLFlow API is quite simple, there is a short introduction for 4 most used deep learning frameworks with links for official documentation. Quick Introduction to MLFlow API:
 
-- how to track keras/torch models and metrics
-- how to store artefacts
-- how to log parameters
-- how to work with runs
-- how to load existing artefacts and models for further use
+- [Keras\Tensorflow](./example_tensorflow.ipynb)
+- [PyTorch](./example_pytorch.ipynb)
+- [Scikit-Learn](./example_scikit-learn.ipynb)
+- [Langchain](./example_langchain.ipynb)
+
 
 ## Experiment Management Guidelines
+
+**...WORK IN PROGRESS...**
 
 Additionally, this repository contains [guidelines](./GUIDELINES.md) of how to manage experiments in MLFlow, and what suggested to track while working on ML+CV projects. It is important to have a consistent way of tracking experiments, so that we can easily compare them and reproduce them.
